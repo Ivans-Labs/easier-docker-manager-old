@@ -1,0 +1,392 @@
+/* Load Tailwind CSS */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Custom styles */
+html {
+    background-color: #121212;
+}
+body {
+    background-color: #1a1a1a;
+    color: #fff;
+}
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+form input[type="text"] {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #333;
+    color: #fff;
+    border: none;
+}
+form input[type="submit"] {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    background-color: #1AAE6F;
+    color: #fff;
+    border: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+form input[type="submit"]:hover {
+    background-color: #2B6CB0;
+    transform: scale(1.05);
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    margin-bottom: 0.5rem;
+}
+ul li a {
+    color: #fff;
+    text-decoration: none;
+    background-color: #1AAE6F;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+ul li a:hover {
+    background-color: #2B6CB0;
+    transform: scale(1.05);
+}
+
+/* Add different button colors */
+form input[type="submit"],
+ul li a {
+    background-color: #1AAE6F;
+}
+form input[type="submit"]:hover,
+ul li a:hover {
+    background-color: #2B6CB0;
+}
+
+/* Add running dot next to running containers */
+ul li .animate-ping {
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    z-index: 1;
+}
+
+.animate-ping {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes ping {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    75%, 100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+.card {
+    background-color: #2d2d2d;
+    border-radius: 0.25rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+.card-text {
+    margin-bottom: 1rem;
+}
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    background-color: #1AAE6F;
+    color: #fff;
+    border: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+.btn:hover {
+    background-color: #2B6CB0;
+    transform: scale(1.05);
+}
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+    font-weight: bold;
+}
+.alert-success {
+    background-color: #1aae6f;
+    color: #fff;
+}
+.alert-danger {
+    background-color: #f44336;
+    color: #fff;
+}
+.spinner {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 0.25rem solid rgba(255, 255, 255, 0.2);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.selected {
+    background-color: #2b6cb0 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+ 
+#console-window {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #1a1a1a;
+    color: #fff;
+    font-family: monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    overflow-y: scroll;
+    padding: 1.5rem;
+    z-index: 9999;
+    display: none;
+}
+ 
+ #console-window pre {
+    margin: 0;
+    white-space: pre-wrap;
+ }
+ 
+ #console-window .input {
+    color: #fff;
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #4a4a4a54;
+    background-color: transparent;
+    font-family: monospace;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    box-sizing: border-box;
+    margin-top: 1rem;
+ }
+ 
+ #console-window .input:focus {
+    outline: none;
+    border-color: #1aae6f;
+ }
+ /* Console */
+#console-output {
+    background-color: #1f1f1f;
+    color: #fff;
+}
+
+#container-select {
+    background-color: #fff;
+    color: #000;
+}
+
+#connect-btn {
+    background-color: #1f1f1f;
+    color: #fff;
+}
+
+#send-btn {
+    background-color: #1f1f1f;
+    color: #fff;
+}
+
+#console-input {
+    background-color: #fff;
+    color: #000;
+} 
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.container-list {
+    position: relative;
+    overflow: hidden;
+}
+
+.container-list:before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-size: 200%;
+}
+
+.container-status.running {
+    background-color: green;
+    animation: blink 2s ease-in-out infinite;
+}
+
+.container-status.other {
+    background-color: red;
+    animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    
+    50% {
+        opacity: 0.5;
+    }
+    
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-overlay {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.modal-content {
+    background-color: #1a202c;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    width: 50%;
+    max-width: 600px;
+    position: relative;
+}
+
+.modal-content .close-modal-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.env-var-input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.env-var-input-container input {
+    border: none;
+}
+
+.env-var-input-container input:focus {
+    outline: none;
+}
+
+.remove-env-var-button {
+    font-size: 24px;
+}
+
+.add-env-var-button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.env-var-container {
+    margin-bottom: 10px;
+}
+
+.modal-content {
+    background-color: #333;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 0.25rem;
+    position: relative;
+}
+
+.close-modal-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 10px;
+}
+
+.close-modal-button:hover,
+.close-modal-button:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.animate__animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+.animate__fadeIn {
+    animation-name: fadeIn;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.bg-gray-800 {
+    background-color: #1a202c;
+}
+
+.text-green-500 {
+    color: #48bb78;
+}
+
+.text-red-500 {
+    color: #f56565;
+}

@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Docker Game Server Manager
+{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto px-4">
+        {% if error %}
+            <div class="bg-red-500 text-white p-4 mb-4">{{ error }}</div>
+        {% endif %}
+        <section class="py-8">
+            <h2 class="text-xl font-bold mb-4">Create a new game server container:</h2>
+        
+            <form action="/create" method="post" onsubmit="return confirm('Are you sure you want to create this container?')">
+                <div class="mb-4">
+                    <label class="block text-gray-300 font-bold mb-2" for="image_name">Image name:</label>
+                    <input class="block w-full p-2 rounded bg-gray-700 text-white" type="text" name="image_name" id="image_name" placeholder="Enter image name" required>
+                </div>
+        
+                <div class="mb-4">
+                    <label class="block text-gray-300 font-bold mb-2" for="container_name">Container name:</label>
+                    <input class="block w-full p-2 rounded bg-gray-700 text-white" type="text" name="container_name" id="container_name" placeholder="Enter container name" required>
+                </div>
+        
+                <div class="mb-4">
+                    <label class="block text-gray-300 font-bold mb-2" for="game_port">Game port(s):</label>
+                    <input class="block w-full p-2 rounded bg-gray-700 text-white" type="text" name="game_port" id="game_port" placeholder="Enter game port(s) separated by commas (e.g. 27015, 27016)" pattern="^([0-9]+,)*[0-9]+$" required>
+                </div>
+        
+                <div class="mb-4">
+                    <label class="block text-gray-300 font-bold mb-2" for="game_type">Game type:</label>
+                    <select class="block w-full p-2 rounded bg-gray-700 text-white" name="game_type" id="game_type" required>
+                        <option value="">Select game type</option>
+                        <option value="CS:GO">CS:GO</option>
+                        <option value="Minecraft">Minecraft</option>
+                        <option value="Terraria">Terraria</option>
+                        <option value="Team Fortress 2">Team Fortress 2</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+        
+                <div class="mb-4">
+                    <input class="px-4 py-2 rounded bg-gray-700 text-white hover:bg-gray-600 transition-colors duration-200" type="submit" value="Create">
+                </div>
+            </form>
+        </section>
+
+        <section class="py-8">
+            <h2 class="text-xl font-bold mb-4">Load Config:</h2>
+        
+            <button id="load-config-button" class="bg-blue-500 text-white py-2 px-4 rounded shadow hover:bg-blue-700 transition-colors duration-200">Load Config</button>
+        </section>
+
+        <div class="mb-6">
+            <label class="block text-gray-300 font-bold mb-2">Environment variables:</label>
+            <button type="button" class="px-4 py-2 rounded bg-gray-700 text-white hover:bg-gray-600 transition-colors duration-200" onclick="openEnvVars()">Edit</button>
+            <div id="env-vars" class="hidden mt-2">
+                <div class="env-var-input-container mb-2">
+                    <input class="block w-1/2 p-2 rounded-l bg-gray-700 text-white mr-2" type="text" name="env_var_key[]" placeholder="Enter variable name">
+                    <input class="block w-1/2 p-2 rounded-r bg-gray-700 text-white" type="text" name="env_var_value[]" placeholder="Enter variable value">
+                    <span class="remove-env-var-button ml-2 text-red-500 cursor-pointer" onclick="removeEnvVar(this)">&times;</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal">
+            <div class="modal-overlay" onclick="closeEnvVars()"></div>
+            <div class="modal-content">
+                <span class="close-modal-button">&times;</span>
+                <h2 class="text-xl font-bold mb-4">Edit environment variables:</h2>
+        
+                <div id="env-vars-modal">
+                    <div class="env-var-container mb-2">
+                        <input class="block w-1/2 p-2 rounded-l bg-gray-700 text-white mr-2" type="text" name="env_var_key[]" placeholder="Enter variable name">
+                        <input class="block w-1/2 p-2 rounded-r bg-gray-700 text-white" type="text" name="env_var_value[]" placeholder="Enter variable value">
+                        <span class="remove-env-var-button ml-2 text-red-500 cursor-pointer" onclick="removeEnvVar(this)">&times;</span>
+                    </div>
+                </div>
+        
+                <button class="add-env-var-button px-4 py-2 rounded bg-gray-700 text-white hover:bg-gray-600 transition-colors duration-200" onclick="addEnvVar()">+ Add Variable</button>
+            </div>
+        </div>
+        
+        <script>
+            function removeEnvVar(element) {
+                element.parentNode.remove();
+            }
+        
+            function addEnvVar() {
+                var newEnvVar = document.createElement('div');
+                newEnvVar.classList.add('mt-2');
+        
+                var keyInput = document.createElement('input');
+                keyInput.classList.add('block', 'w-1/2', 'p-2', 'rounded-l', 'bg-gray-700', 'text-white', 'mr-2');
+                keyInput.type = 'text';
+                keyInput.name = 'env_var_key[]';
+                keyInput.placeholder = 'Enter variable name';
+        
+                var valueInput = document.createElement('input');
+                valueInput.classList.add('block', 'w-1/2', 'p-2', 'rounded-r', 'bg-gray-700', 'text-white');
+                valueInput.type = 'text';
+                valueInput.name = 'env_var_value[]';
+                valueInput.placeholder = 'Enter variable value';
+        
+                var removeButton = document.createElement('span');
+                removeButton.classList.add('remove-env-var-button', 'ml-2', 'text-red-500', 'cursor-pointer');
+                removeButton.innerHTML = '&times;';
+                removeButton.addEventListener('click', function() {
+                    newEnvVar.remove();
+                });
+        
+                newEnvVar.appendChild(keyInput);
+                newEnvVar.appendChild(valueInput);
+                newEnvVar.appendChild(removeButton);
+        
+                var envVarsModal = document.querySelector('#env-vars-modal');
+                envVarsModal.appendChild(newEnvVar);
+            }
+        
+            var addEnvVarButton = document.querySelector('.add-env-var-button');
+            addEnvVarButton.addEventListener('click', addEnvVar);
+        </script>
+
+        <script>
+            function openEnvVars() {
+                var modal = document.querySelector('.modal');
+                modal.style.display = 'block';
+            }
+        </script>
+
+        <section class="py-8">
+            <h2 class="text-xl font-bold mb-4">Running containers:</h2>
+
+            <ul>
+                {% for container in containers %}
+                <li class="flex items-center justify-between bg-gray-700 py-2 px-4 rounded mb-4">
+                    <strong class="text-white">{{ container.name }}</strong>
+                    {% if container.status == 'running' %}
+                    <span class="container-status {% if container.status == 'running' %}running{% else %}other{% endif %} inline-flex h-2 w-2 rounded-full"></span>
+                    {% endif %}
+                    <span class="text-gray-400">{{ container.status }}</span>
+                    <div>
+                        <a class="bg-red-500 text-white-500 hover:text-gray-400" onclick="restartContainer('{{ container.id }}')">Restart</a>
+
+                        <a class="bg-red-500 text-white-500 hover:text-gray-400" onclick="deleteContainer('{{ container.id }}')">Delete</a>
+                        
+                        <a class="text-white hover:text-gray-400" onclick="backupContainer('{{ container.id }}')">Backup</a>
+                        
+                        <a class="bg-green-500 text-white hover:text-gray-400" onclick="openPerformance('{{ container.id }}')">Performance</a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+    </div>
+
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close-modal-button">&times;</span>
+            <h2 class="text-xl font-bold mb-4">Load Config:</h2>
+
+            <form action="/load" method="post">
+                <div class="mb-4">
+                    <label class="block text-gray-300 font-bold mb-2" for="image_name">Image name:</label>
+                    <input class="block w-full p-2 rounded bg-gray-700 text-white" type="text" name="image_name" id="image_name">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-300 font-bold mb-2" for="container_name">Container name:</label>
+                    <input class="block w-full p-2 rounded bg-gray-700 text-white" type="text" name="container_name" id="container_name">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-300 font-bold mb-2" for="game_port">Game port:</label>
+                    <input class="block w-full p-2 rounded bg-gray-700 text-white" type="text" name="game_port" id="game_port">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-300 font-bold mb-2" for="game_type">Game type:</label>
+                    <input class="block w-full p-2 rounded bg-gray-700 text-white" type="text" name="game_type" id="game_type">
+                </div>
+
+                <div class="mb-4">
+                    <input class="px-4 py-2 rounded bg-gray-700 text-white hover:bg-gray-600 transition-colors duration-200" type="submit" value="Load">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/configloader.js') }}"></script>
+{% endblock %}

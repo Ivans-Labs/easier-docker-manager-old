@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Game Server Manager - Performance Stats
+{% endblock %}
+
+{% block content %}
+    <section class="py-8">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl font-bold mb-4">Container Performance</h2>
+
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {% for container in containers %}
+                    <div class="bg-gray-800 rounded-lg shadow-lg p-6 animate__animated animate__fadeIn">
+                        <h3 class="text-lg font-bold mb-4">{{ container.name }}</h3>
+                        <p class="text-lg font-bold text-green-500 mb-4"><span class="font-medium">CPU Usage:</span> {{ round(container.stats(stream=False)['cpu_stats']['cpu_usage']['total_usage'] / container.stats(stream=False)['cpu_stats']['system_cpu_usage'] * 100, 2) }}%</p>
+                        <p class="text-lg font-bold text-red-500 mb-4"><span class="font-medium">Memory Usage:</span> {{ round(container.stats(stream=False)['memory_stats']['usage'] / 1024 / 1024) }} MB</p>
+                        <p class="text-lg font-bold text-yellow-500 mb-4"><span class="font-medium">Uptime:</span> <span class="uptime" data-start-time="{{ container.attrs['State']['StartedAt'] }}"></span></p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-gap: 2rem;
+        }
+
+        .container {
+            max-width: 400px;
+            padding: 2rem;
+            background-color: #f7fafc;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.2s ease-in-out;
+        }
+
+        .container:hover {
+            box-shadow: 0 0 2rem rgba(0, 0, 0, 0.3);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        .text-green-500 {
+            color: #48bb78;
+        }
+
+        .text-red-500 {
+            color: #f56565;
+        }
+
+        .text-yellow-500 {
+            color: #ecc94b;
+        }
+    </style>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          let uptimes = document.querySelectorAll(".uptime");
+          uptimes.forEach(function(uptime) {
+            let startTime = new Date(uptime.dataset.startTime);
+            setInterval(function() {
+              let currentTime = new Date();
+              let timeDiff = currentTime - startTime;
+              let hours = Math.floor(timeDiff / (1000 * 60 * 60));
+              let minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
+              let seconds = Math.floor((timeDiff / 1000) % 60);
+              uptime.innerHTML = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+            }, 1000);
+          });
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/performance.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{
+    "image_name": "marctv/minecraft-papermc-server",
+    "container_name": "game-server-1",
+    "game_port": 25585,
+    "game_type": "mc",
+    "env_vars": [
+        {
+            "name": "DB_HOST",
+            "value": "localhost"
+        },
+        {
+            "name": "DB_PORT",
+            "value": "5432"
+        },
+        {
+            "name": "DB_USER",
+            "value": "myuser"
+        },
+        {
+            "name": "DB_PASSWORD",
+            "value": "mypassword"
+        }
+    ]
+}

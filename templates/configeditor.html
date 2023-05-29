@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Configuration Editor</h1>
+  <form id="config-form">
+    <label for="config-file">Select configuration file:</label>
+    <select id="config-file" name="config_file">
+      <option value="server.properties">server.properties</option>
+      <!-- Add options for other configuration files here -->
+    </select>
+    <br>
+    <label for="config-content">Configuration content:</label>
+    <textarea id="config-content" name="config_content" rows="10" cols="80"></textarea>
+    <br>
+    <button type="button" id="save-btn">Save</button>
+    <button type="button" id="cancel-btn">Cancel</button>
+  </form>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='configeditor.js') }}"></script>
+{% endblock %}

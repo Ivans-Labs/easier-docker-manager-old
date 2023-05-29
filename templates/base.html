@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 fixed w-full z-10 top-0">
+        <div class="container mx-auto px-6 py-3 md:flex md:justify-between md:items-center">
+            <div class="flex items-center justify-between">
+                <div style="margin-top: 20px; margin-bottom: 20px;">
+                    <a class="text-xl font-bold text-white" href="/">Docker Game Server Manager</a>
+                </div>
+                <div class="md:hidden">
+                    <button type="button" class="text-gray-500 hover:text-white focus:outline-none focus:text-white" aria-label="toggle menu">
+                        <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+                            <path fill-rule="evenodd" d="M3 5h18a1 1 0 110 2H3a1 1 0 110-2zm0 7h18a1 1 0 110 2H3a1 1 0 110-2zm0 7h18a1 1 0 110 2H3a1 1 0 110-2z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="hidden md:flex md:items-center">
+                <a class="block md:inline-block mt-4 md:mt-0 mr-6 text-gray-500 hover:text-white" href="/">Home</a>
+            </div>
+        </div>
+        <div class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 sm:px-3">
+                <a class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700" href="/">Home</a>
+            </div>
+        </div>
+    </nav>
+    <main class="pt-16">
+        {% block content %}
+        {% endblock %}
+    </main>
+    {% block scripts %}
+    {% endblock %}
+    <script>
+        const toggleMenu = document.querySelector('button[aria-label="toggle menu"]');
+        const navMenu = document.querySelector('.hidden');
+
+        toggleMenu.addEventListener('click', () => {
+            navMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
