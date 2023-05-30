@@ -1,4 +1,4 @@
-# Easier Docker Manager
+# Easier Docker Manager Old Version
 
 ### Currently Flask + Docker + HTML and frontend will change eventually.
 
